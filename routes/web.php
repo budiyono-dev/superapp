@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,15 +9,16 @@ Route::get('/', function () {
 });
 
 // Auth routes
-Route::get('login', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
-Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+Route::middleware(['guest'])->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('otp', [AuthController::class, 'showOtpForm'])->name('otp.form');
+    Route::post('otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
+});
 
-Route::get('otp', [App\Http\Controllers\AuthController::class, 'showOtpForm'])->name('otp.form');
-Route::post('otp', [App\Http\Controllers\AuthController::class, 'verifyOtp'])->name('otp.verify');
-
-// Post menu and create post
-Route::middleware([])->group(function () {
-    Route::get('posts/create', [App\Http\Controllers\PostController::class, 'create'])->name('posts.create');
-    Route::post('posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store');
+Route::middleware(['auth'])->group(function () {
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::view('/admin', 'admin.dashboard');
+    Route::get('/admin/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/admin/posts', [PostController::class, 'store'])->name('posts.store');
 });

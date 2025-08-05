@@ -5,9 +5,12 @@
         <h2 class="text-2xl font-bold text-center text-gray-800">Enter OTP</h2>
         <form method="POST" action="{{ route('otp.verify') }}" class="space-y-4">
             @csrf
+            @if ($errors->has('otp'))
+                <div class="text-red-600 text-sm mb-2">{{ $errors->first('otp') }}</div>
+            @endif
             <div>
                 <label for="otp" class="block mb-1 text-sm font-medium text-gray-700">OTP</label>
-                <input type="text" name="otp" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" required autofocus>
+                <input type="text" name="otp" class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" required autofocus autocomplete="off" inputmode="numeric">
             </div>
             <button type="submit" class="w-full py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700">Verify OTP</button>
         </form>

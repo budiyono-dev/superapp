@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('otp_logins', function (Blueprint $table) {
             $table->id();
-            $table->integer('otp')->comment('One Time Password');
+            $table->string('otp');
             $table->integer('user_id');
             $table->string('ip_address')->nullable();
             $table->string('status');

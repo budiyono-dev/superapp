@@ -24,6 +24,7 @@ class PostController extends Controller
             'content' => $request->content,
             'user_id' => Auth::id(),
         ]);
+
         return redirect()->route('posts.create')->with('success', 'Post created successfully!');
     }
 }
